@@ -17,9 +17,10 @@ spring:
       hibernate:
         format_sql=true:
 
-size:
-  max: 2
 
-sorting:
-  enabled-fields: brand,year
-
+loan:
+  link: https://66055cd12ca9478ea1801f2e.mockapi.io/api/users/income
+  min-income: 40000
+  min-price-car: 1000000
+  by-car-percent: 30
+  by-income-period: 6

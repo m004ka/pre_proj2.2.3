@@ -25,6 +25,8 @@ public class Car {
     private int year;
 
     private String brand;
+
+    private int price;
 }
 
 

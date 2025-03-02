@@ -1,8 +1,8 @@
 package org.example.springbootproj2.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.example.springbootproj2.DTO.UserDTO;
-import org.example.springbootproj2.model.User;
+import org.example.springbootproj2.dto.UserDTO;
+import org.example.springbootproj2.service.LoanService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,26 +12,33 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 
 @RestController
 @RequestMapping("/loan")
 @RequiredArgsConstructor
-public class UserController {
+public class LoanController {
+
+    private final LoanService loanService;
 
     @Value("${loan.link}")
     private String link;
 
     @GetMapping
-    public int getLoan(@RequestParam("id") Long id){
+    public ResponseEntity<Integer> getLoan(@RequestParam("userId") Long userId) {
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<UserDTO[]> response = restTemplate.getForEntity(link, UserDTO[].class);
         List<UserDTO> userList = List.of(response.getBody());
         Optional<UserDTO> user = userList.stream()
-                .filter(u -> u.getId().equals(id))
+                .filter(u -> Objects.equals(u.getId(), userId))
                 .findFirst();
-
+        if (user.isPresent()) {
+            return ResponseEntity.ok(loanService.loanApproval(user.get().getIncome(), userId));
+        } else {
+            return ResponseEntity.ok(loanService.loanApproval(0, userId));
+        }
 
     }
 }

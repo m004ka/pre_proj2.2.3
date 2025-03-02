@@ -16,13 +16,13 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    long id;
+    private long id;
 
-    String name;
+    private String name;
 
-    int income
+    private int income;
 
     @OneToOne
-    Car car;
+    private Car car;
 
 }
