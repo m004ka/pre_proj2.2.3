@@ -15,8 +15,4 @@ public class UserServiceImpl implements UserService {
         return userRepository.getUserById(id);
     }
 
-    public void addUser(User user) {
-        userRepository.save(user);
-    }
-
 }

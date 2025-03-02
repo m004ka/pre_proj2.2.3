@@ -1,6 +1,7 @@
 package org.example.springbootproj2.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.example.springbootproj2.config.LoanProperties;
 import org.example.springbootproj2.dto.UserDTO;
 import org.example.springbootproj2.service.LoanService;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,15 +23,14 @@ import java.util.Optional;
 public class LoanController {
 
     private final LoanService loanService;
-
-    @Value("${loan.link}")
-    private String link;
+    private final LoanProperties loanProperties;
 
     @GetMapping
     public ResponseEntity<Integer> getLoan(@RequestParam("userId") Long userId) {
         RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity<UserDTO[]> response = restTemplate.getForEntity(link, UserDTO[].class);
+        ResponseEntity<UserDTO[]> response = restTemplate.getForEntity(loanProperties.getLink(), UserDTO[].class);
         List<UserDTO> userList = List.of(response.getBody());
+
         Optional<UserDTO> user = userList.stream()
                 .filter(u -> Objects.equals(u.getId(), userId))
                 .findFirst();
