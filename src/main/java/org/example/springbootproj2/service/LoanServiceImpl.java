@@ -36,11 +36,7 @@ public class LoanServiceImpl implements LoanService {
                 .filter(u -> Objects.equals(u.getId(), id))
                 .findFirst();
 
-        if (userUrl.isPresent()) {
-            income = userUrl.get().getIncome();
-        } else {
-            income = user.getIncome();
-        }
+        income = userUrl.map(UserDTO::getIncome).orElseGet(user::getIncome);
 
 
         if (user.getCar() != null) {
