@@ -17,7 +17,7 @@ public class LoanProperties {
 
     private int minPriceCar;
 
-    private int loanByCarPercent;
+    private int byCarPercent;
 
-    private int loanByIncomePeriod;
+    private int byIncomePeriod;
 }

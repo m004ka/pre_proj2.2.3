@@ -29,7 +29,6 @@ public class LoanServiceImpl implements LoanService {
                 .map(Car::getPrice)
                 .orElse(0);
 
-
         if (approvalVerification(income, priceCar)) {
             return getLoanAmount(income, priceCar);
         } else {
@@ -39,9 +38,9 @@ public class LoanServiceImpl implements LoanService {
 
     private int getLoanAmount(int income, int priceCar) {
 
-        int loanByCar = priceCar * loanProperties.getLoanByCarPercent() / 100;
+        int loanByCar = priceCar * loanProperties.getByCarPercent() / 100;
 
-        int loanByIncome = income * loanProperties.getLoanByIncomePeriod();
+        int loanByIncome = income * loanProperties.getByIncomePeriod();
 
         return Math.max(loanByCar, loanByIncome);
     }
