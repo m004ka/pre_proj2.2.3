@@ -2,15 +2,11 @@ package org.example.springbootproj2.service;
 
 import lombok.RequiredArgsConstructor;
 import org.example.springbootproj2.config.LoanProperties;
-import org.example.springbootproj2.dto.UserDTO;
+import org.example.springbootproj2.model.Car;
 import org.example.springbootproj2.model.User;
-
-import org.springframework.http.ResponseEntity;
+import org.m004ka.service.IncomeService;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
-import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -19,29 +15,19 @@ public class LoanServiceImpl implements LoanService {
 
     private final UserService userService;
     private final LoanProperties loanProperties;
+    private final IncomeService client;
 
 
     @Override
     public int loanApproval(Long id) {
-        int priceCar = 0;
-        int income = 0;
-
         User user = userService.getUserById(id);
 
-        RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity<UserDTO[]> response = restTemplate.getForEntity(loanProperties.getLink(), UserDTO[].class);
-        List<UserDTO> userList = List.of(response.getBody());
+        int income = client.getIncome(id);
 
-        Optional<UserDTO> userUrl = userList.stream()
-                .filter(u -> Objects.equals(u.getId(), id))
-                .findFirst();
-
-        income = userUrl.map(UserDTO::getIncome).orElseGet(user::getIncome);
-
-
-        if (user.getCar() != null) {
-            priceCar = user.getCar().getPrice();
-        }
+        int priceCar = Optional.ofNullable(user)
+                .map(User::getCar)
+                .map(Car::getPrice)
+                .orElse(0);
 
 
         if (approvalVerification(income, priceCar)) {

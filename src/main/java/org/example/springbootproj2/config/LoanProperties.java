@@ -13,8 +13,6 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties(prefix = "loan")
 public class LoanProperties {
 
-    private String link;
-
     private int minIncome;
 
     private int minPriceCar;

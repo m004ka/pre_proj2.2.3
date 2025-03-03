@@ -20,9 +20,6 @@ public class User {
 
     private String name;
 
-    private int income;
-
     @OneToOne
     private Car car;
-
 }
